@@ -10,28 +10,71 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/product-sans" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- WebGL Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/postprocessing@6.30.2/build/postprocessing.js"></script>
+    <script src="pixel-blast.js"></script>
 </head>
 
 <body>
     <!-- Background Animated Shapes -->
-    <div class="bg-shape bg-shape-1"></div>
-    <div class="bg-shape bg-shape-2"></div>
+    <div id="pixel-blast-container" class="pixel-blast-container"></div>
 
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="logo">Tech<span>Nova</span></div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#events">Events</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <button class="nav-btn">Register Now</button>
-    </nav>
+    <div class="pill-nav-container fade-in">
+        <nav class="pill-nav" aria-label="Primary">
+            <a class="pill-logo" href="#home" aria-label="Home">
+                <div class="logo logo-img"><span class="decrypt-text" data-text="Tech">Tech</span><span
+                        class="neon-text decrypt-text" data-text="Nova">Nova</span></div>
+            </a>
+            <div class="pill-nav-items desktop-only">
+                <ul class="pill-list" role="menubar">
+                    <li role="none">
+                        <a role="menuitem" href="#home" class="pill" aria-label="Home">
+                            <span class="hover-circle" aria-hidden="true"></span>
+                            <span class="label-stack">
+                                <span class="pill-label">Home</span>
+                                <span class="pill-label-hover" aria-hidden="true">Home</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a role="menuitem" href="#about" class="pill" aria-label="About">
+                            <span class="hover-circle" aria-hidden="true"></span>
+                            <span class="label-stack">
+                                <span class="pill-label">About</span>
+                                <span class="pill-label-hover" aria-hidden="true">About</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a role="menuitem" href="#events" class="pill" aria-label="Events">
+                            <span class="hover-circle" aria-hidden="true"></span>
+                            <span class="label-stack">
+                                <span class="pill-label">Events</span>
+                                <span class="pill-label-hover" aria-hidden="true">Events</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li role="none">
+                        <a role="menuitem" href="#contact" class="pill" aria-label="Contact">
+                            <span class="hover-circle" aria-hidden="true"></span>
+                            <span class="label-stack">
+                                <span class="pill-label">Contact</span>
+                                <span class="pill-label-hover" aria-hidden="true">Contact</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <button id="theme-toggle" class="nav-btn theme-toggle-btn" aria-label="Toggle theme"
+                style="width: 40px; padding: 0; box-shadow: none; display: flex; align-items: center; justify-content: center; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 50%; color: var(--text-main); font-size: 1.2rem; cursor: pointer; transition: all 0.3s; margin-right: 10px;">☀</button>
+            <button id="register-btn" class="nav-btn">Register</button>
+        </nav>
+    </div>
 
     <!-- Hero Section -->
     <header id="home" class="hero">
@@ -42,7 +85,8 @@
                 Department of <span class="neon-text">Information Science &amp; Engineering</span>
                 <br>&amp; <span class="neon-text">Artificial Intelligence &amp; Data Science</span>
             </h3>
-            <h1>EMBRACE THE <span class="neon-text">FUTURE</span></h1>
+            <h1><span class="decrypt-text" data-text="EMBRACE THE ">EMBRACE THE </span><span
+                    class="neon-text decrypt-text" data-text="FUTURE">FUTURE</span></h1>
             <p>The biggest tech fest of the year is here. Code, Create, Conquer.</p>
             <div class="hero-dates">April 8 - 9, 2026</div>
             <a href="#events" class="cta-button">Explore Events</a>
@@ -77,7 +121,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Code Wars</h3>
-                        <p class="event-meta">April 8 | 12:00 - 1:00 PM | Room 509</p>
+                        <p class="event-meta">April 8 | 12:00 - 1:00 PM | Room 509, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Trupthi Ma'am</p>
                         <details class="rules-dropdown">
                             <summary class="card-btn">View Rules</summary>
@@ -111,7 +155,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Quiz</h3>
-                        <p class="event-meta">April 8 | 1:00 - 2:30 PM | Room 301</p>
+                        <p class="event-meta">April 8 | 1:00 - 2:30 PM | Room 301, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Roopa ma'am</p>
                         <details class="rules-dropdown">
                             <summary class="card-btn">View Rules</summary>
@@ -135,12 +179,11 @@
                 <!-- Event 3 -->
                 <div class="event-card fade-in">
                     <div class="event-image-placeholder">
-                        <img src="" alt="Ideathon X Poster" class="event-img" style="display:none;">
-                        <span>Image Placeholder (Add 'src' later)</span>
+                        <img src="images/ideathon.jpeg" alt="Ideathon X Poster" class="event-img">
                     </div>
                     <div class="event-details">
                         <h3>Ideathon X</h3>
-                        <p class="event-meta">April 8 | 2:30 - 3:30 PM | Room 308</p>
+                        <p class="event-meta">April 8 | 2:30 - 3:30 PM | Room 308, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Sruthi ma'am</p>
 
                     </div>
@@ -153,7 +196,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Photo & Video</h3>
-                        <p class="event-meta">April 8 | 2:30 - 3:30 PM | Room 301</p>
+                        <p class="event-meta">April 8 | 2:30 - 3:30 PM | Room 301, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Anjana ma'am</p>
                         <details class="rules-dropdown">
                             <summary class="card-btn">View Rules</summary>
@@ -190,7 +233,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Rapid Typing</h3>
-                        <p class="event-meta">April 8 | 3:30 - 4:30 PM | Room 511</p>
+                        <p class="event-meta">April 8 | 3:30 - 4:30 PM | Room 511, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Anjana ma'am</p>
 
                     </div>
@@ -203,7 +246,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Poster Presentation</h3>
-                        <p class="event-meta">April 8 | 3:30 - 4:30 PM | Room 308</p>
+                        <p class="event-meta">April 8 | 3:30 - 4:30 PM | Room 308, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Sharon & Akshattha ma'am</p>
                         <details class="rules-dropdown">
                             <summary class="card-btn">View Rules</summary>
@@ -234,7 +277,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Debate</h3>
-                        <p class="event-meta">April 9 | 12:00 - 1:30 PM | Room 308</p>
+                        <p class="event-meta">April 9 | 12:00 - 1:30 PM | Room 308, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Akshatha ma'am</p>
 
                     </div>
@@ -260,7 +303,7 @@
                     </div>
                     <div class="event-details">
                         <h3>NextGen Gaming</h3>
-                        <p class="event-meta">April 9 | 1:30 - 2:30 PM | Room 308</p>
+                        <p class="event-meta">April 9 | 1:30 - 2:30 PM | Room 308, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Kiran sir</p>
 
                     </div>
@@ -273,7 +316,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Protoforge</h3>
-                        <p class="event-meta">April 9 | 1:30 - 2:30 PM | Room 308 (CMM Base 1)</p>
+                        <p class="event-meta">April 9 | 1:30 - 2:30 PM | Room 308, Main Engg Block (CMM Base 1)</p>
                         <p class="event-desc">Faculty Incharge: Padmya ma'am</p>
 
                     </div>
@@ -286,7 +329,7 @@
                     </div>
                     <div class="event-details">
                         <h3>Treasure Hunt</h3>
-                        <p class="event-meta">April 9 | 2:30 - 4:30 PM | Room 301</p>
+                        <p class="event-meta">April 9 | 2:30 - 4:30 PM | Room 301, Main Engg Block</p>
                         <p class="event-desc">Faculty Incharge: Kiran sir & Sharon ma'am</p>
 
                     </div>
@@ -337,7 +380,35 @@
         <img class="full-screen-img" id="full-image" src="" alt="Full Screen Event Poster">
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
+
+    <!-- Initialize Interactive WebGL Background -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.initPixelBlast) {
+                window.initPixelBlast('pixel-blast-container', {
+                    variant: 'square',
+                    pixelSize: 4,
+                    color: '#B19EEF',
+                    patternScale: 2,
+                    patternDensity: 1,
+                    pixelSizeJitter: 0,
+                    enableRipples: true,
+                    rippleSpeed: 0.4,
+                    rippleThickness: 0.12,
+                    rippleIntensityScale: 1.5,
+                    liquid: false,
+                    liquidStrength: 0.12,
+                    liquidRadius: 1.2,
+                    liquidWobbleSpeed: 5,
+                    speed: 0.5,
+                    edgeFade: 0.25,
+                    transparent: true
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

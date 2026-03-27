@@ -22,6 +22,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- Decrypted Text Logo Effect ---
+    const decryptElements = document.querySelectorAll('.decrypt-text');
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+';
+    
+    const animateDecrypt = (el, maxShuffles = 2, speed = 50) => {
+        if (el.isAnimatingDecrypt) return;
+        el.isAnimatingDecrypt = true;
+        
+        const originalText = el.getAttribute('data-text');
+        let revealedCount = 0;
+        let iter = 0;
+        
+        const shuffleText = (len) => {
+            let res = '';
+            for (let i = 0; i < originalText.length; i++) {
+                if (i < len) res += originalText[i];
+                else res += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return res;
+        };
+
+        const interval = setInterval(() => {
+            iter++;
+            if (iter % maxShuffles === 0) revealedCount++;
+            
+            if (revealedCount > originalText.length) {
+                clearInterval(interval);
+                el.textContent = originalText;
+                el.isAnimatingDecrypt = false;
+            } else {
+                el.textContent = shuffleText(revealedCount);
+            }
+        }, speed);
+    };
+
+    // Trigger immediately on load
+    decryptElements.forEach(el => animateDecrypt(el, 5, 80));
+
+    // Trigger on logo hover
+    const mainLogo = document.querySelector('.pill-logo');
+    if (mainLogo) {
+        mainLogo.addEventListener('mouseenter', () => {
+            decryptElements.forEach(el => animateDecrypt(el, 3, 60));
+        });
+    }
+
     // --- Intersection Observer for Scroll Animations ---
     // Elements with .fade-in or .slide-up will animate when they enter the viewport
     const observerOptions = {
@@ -49,23 +95,74 @@ document.addEventListener('DOMContentLoaded', () => {
         animateOnScroll.observe(el);
     });
 
-    // --- Navbar Scroll Effect ---
-    // Make navbar background more opaque when scrolling down
-    const navbar = document.querySelector('.navbar');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(13, 14, 21, 0.95)';
-            navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.5)';
+    // --- Pill Nav GSAP Logic ---
+    document.querySelectorAll('.pill').forEach(pill => {
+        const circle = pill.querySelector('.hover-circle');
+        const label = pill.querySelector('.pill-label');
+        const hoverLabel = pill.querySelector('.pill-label-hover');
+        
+        // Layout calculation handler
+        const layout = () => {
+            const rect = pill.getBoundingClientRect();
+            const w = rect.width;
+            const h = rect.height;
+            
+            // Calculate circle size to cover the pill
+            const R = ((w * w) / 4 + h * h) / (2 * h);
+            const D = Math.ceil(2 * R) + 2;
+            const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
+            const originY = D - delta;
+
+            circle.style.width = `${D}px`;
+            circle.style.height = `${D}px`;
+            circle.style.bottom = `-${delta}px`;
+
+            gsap.set(circle, {
+                xPercent: -50,
+                scale: 0,
+                transformOrigin: `50% ${originY}px`
+            });
+
+            gsap.set(label, { y: 0 });
+            gsap.set(hoverLabel, { y: h + 12, opacity: 0 });
+            
+            // Re-create timeline based on new dimensions
+            if (pill._tl) pill._tl.kill();
+            
+            const tl = gsap.timeline({ paused: true });
+            tl.to(circle, { scale: 1.2, xPercent: -50, duration: 0.4, ease: 'power2.easeOut', overwrite: 'auto' }, 0);
+            tl.to(label, { y: -(h + 8), duration: 0.4, ease: 'power2.easeOut', overwrite: 'auto' }, 0);
+            
+            gsap.set(hoverLabel, { y: Math.ceil(h + 100), opacity: 0 });
+            tl.to(hoverLabel, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.easeOut', overwrite: 'auto' }, 0);
+            
+            pill._tl = tl;
+        };
+
+        // Initialize layout on load
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(layout);
         } else {
-            navbar.style.background = 'rgba(13, 14, 21, 0.8)';
-            navbar.style.boxShadow = 'none';
+            layout();
         }
+
+        window.addEventListener('resize', layout);
+
+        pill.addEventListener('mouseenter', () => pill._tl && pill._tl.play());
+        pill.addEventListener('mouseleave', () => pill._tl && pill._tl.reverse());
     });
+
+    // Logo spin interaction
+    const pillLogo = document.querySelector('.pill-logo');
+    if (pillLogo) {
+        pillLogo.addEventListener('mouseenter', () => {
+            gsap.fromTo(pillLogo, { rotate: 0 }, { rotate: 360, duration: 0.5, ease: 'power2.easeOut', overwrite: 'auto' });
+        });
+    }
 
     // --- Modal Logic ---
     const modal = document.getElementById('register-modal');
-    const registerBtn = document.querySelector('.nav-btn');
+    const registerBtn = document.getElementById('register-btn');
     const closeBtn = document.querySelector('.close-btn');
 
     // Open modal
@@ -121,5 +218,20 @@ document.addEventListener('DOMContentLoaded', () => {
             imageModal.classList.remove('show');
         }
     });
+
+    // --- Theme Toggle Logic ---
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggleBtn.innerHTML = '🌙';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggleBtn.innerHTML = '☀';
+            }
+        });
+    }
 
 });
