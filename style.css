@@ -586,6 +586,19 @@ details[open] summary.card-btn {
     color: #fff;
 }
 
+/* ===== April 9 Events Color ===== */
+.april9 .event-details h3 {
+    color: #FFA500;
+}
+
+.april9 .event-meta {
+    color: #FFA500;
+}
+
+.april9 .event-desc {
+    color: #FFA500;
+}
+
 /* ===== Responsive Design ===== */
 @media (max-width: 768px) {
     .desktop-only {
