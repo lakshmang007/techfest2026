@@ -15,13 +15,12 @@
     <link rel="stylesheet" href="style.css">
     <!-- WebGL Dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/postprocessing@6.30.2/build/postprocessing.js"></script>
-    <script src="pixel-blast.js"></script>
+    <script src="dither.js"></script>
 </head>
 
 <body>
     <!-- Background Animated Shapes -->
-    <div id="pixel-blast-container" class="pixel-blast-container"></div>
+    <div id="dither-container" class="dither-container"></div>
 
     <!-- Navigation -->
     <div class="pill-nav-container fade-in">
@@ -341,6 +340,9 @@
 
     <!-- Footer -->
     <footer id="contact" class="footer glass-panel">
+        <div class="parallax">
+            <div class="scroller" data-text="TECHNOVA 2026 • EMBRACE THE FUTURE • "></div>
+        </div>
         <div class="container footer-content">
             <div class="footer-info">
                 <h3>Tech<span class="neon-text">Nova</span></h3>
@@ -386,25 +388,16 @@
     <!-- Initialize Interactive WebGL Background -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.initPixelBlast) {
-                window.initPixelBlast('pixel-blast-container', {
-                    variant: 'square',
-                    pixelSize: 4,
-                    color: '#B19EEF',
-                    patternScale: 2,
-                    patternDensity: 1,
-                    pixelSizeJitter: 0,
-                    enableRipples: true,
-                    rippleSpeed: 0.4,
-                    rippleThickness: 0.12,
-                    rippleIntensityScale: 1.5,
-                    liquid: false,
-                    liquidStrength: 0.12,
-                    liquidRadius: 1.2,
-                    liquidWobbleSpeed: 5,
-                    speed: 0.5,
-                    edgeFade: 0.25,
-                    transparent: true
+            if (window.initDither) {
+                window.initDither('dither-container', {
+                    waveColor: [0.5, 0.5, 0.5],
+                    disableAnimation: false,
+                    enableMouseInteraction: true,
+                    mouseRadius: 0.3,
+                    colorNum: 4,
+                    waveAmplitude: 0.3,
+                    waveFrequency: 3,
+                    waveSpeed: 0.05
                 });
             }
         });

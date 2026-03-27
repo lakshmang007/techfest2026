@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const interval = setInterval(() => {
             iter++;
-            if (iter % maxShuffles === 0) revealedCount++;
+            if (iter % maxShuffles === 0) revealedCount += 3;
             
             if (revealedCount > originalText.length) {
                 clearInterval(interval);
@@ -233,5 +233,63 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Scroll Velocity Parallax Effect ---
+    const wrap = (min, max, v) => {
+        const range = max - min;
+        const mod = (((v - min) % range) + range) % range;
+        return mod + min;
+    };
+
+    document.querySelectorAll('.parallax').forEach((parallax, index) => {
+        const scroller = parallax.querySelector('.scroller');
+        if (!scroller) return;
+        
+        const baseText = scroller.getAttribute('data-text') || scroller.textContent.trim();
+        scroller.innerHTML = "";
+        const numCopies = window.innerWidth > 768 ? 10 : 6;
+        
+        for(let i = 0; i < numCopies; i++) {
+            const span = document.createElement('span');
+            span.textContent = baseText + " \u00A0"; // trailing space
+            scroller.appendChild(span);
+        }
+        
+        let baseX = 0;
+        let lastScrollY = window.scrollY;
+        let velocity = 0;
+        const baseVelocity = index % 2 === 0 ? 100 : -100;
+        let directionFactor = 1;
+        let lastTime = performance.now();
+        
+        const updatePhysics = (time) => {
+            const delta = time - lastTime;
+            lastTime = time;
+            
+            const currentScrollY = window.scrollY;
+            const diff = currentScrollY - lastScrollY;
+            lastScrollY = currentScrollY;
+            
+            velocity = velocity * 0.9 + diff * 0.1; 
+            let moveBy = directionFactor * baseVelocity * (delta / 1000);
+            
+            if (velocity < -0.5) directionFactor = -1;
+            else if (velocity > 0.5) directionFactor = 1;
+            
+            let velocityFactor = Math.min(Math.abs(velocity) * 0.3, 5); 
+            moveBy += directionFactor * moveBy * velocityFactor;
+            
+            baseX += moveBy;
+            
+            const firstChild = scroller.firstElementChild;
+            if(firstChild && firstChild.offsetWidth > 0) {
+                const wrappedX = wrap(-firstChild.offsetWidth, 0, baseX);
+                scroller.style.transform = `translate3d(${wrappedX}px, 0, 0)`;
+            }
+            
+            requestAnimationFrame(updatePhysics);
+        };
+        requestAnimationFrame(updatePhysics);
+    });
 
 });
