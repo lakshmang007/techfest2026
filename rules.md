@@ -83,3 +83,48 @@ A
 No communication between teams is allowed. 
 
 All participants must be present at the venue 10 minutes before the start. 
+
+TECHNICAL DEBATE:
+Rules & Regulations
+📌 Eligibility
+1.pen to all students
+2.Individual participation
+3.Prior registration required
+🎯 Debate Format
+1.Language: English only
+2.Participants assigned: For / Against
+3.Topics based on technical domains
+⏱️ Time Limit
+1.Opening: 2–3 minutes
+2.Rebuttal: 1–2 minutes
+3.Conclusion: 1 minute
+⏰ 30-sec warning bell
+🗣️ Speaking Guidelines
+1.Stay relevant to the topic
+2.Use facts, examples & data
+3.Notes allowed (no full reading)
+4.Avoid repetition
+🚫 Code of Conduct
+1.No personal attacks
+2.Maintain respect & discipline
+3.Professional behavior required
+⚖️ Judging Criteria
+1.Technical Knowledge
+2.Clarity & Confidence
+3.Argument Strength
+4.Rebuttal Skills
+5.Time Management
+❓ Rebuttal Round
+1.Ask relevant questions
+2.Be respectful
+3.No interruptions
+🛠️ Rules
+1.No gadgets (unless allowed)
+2.No internet usage
+🏆 Decision
+1.Judges decision is final
+⚠️ Disqualification
+1.Time violation
+2.Misconduct
+3.Irrelevant / copied content
+✨ Speak Smart. Argue Strong. Win with Logic! 
