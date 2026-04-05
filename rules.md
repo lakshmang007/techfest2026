@@ -1,5 +1,9 @@
-**CODE WAR** 
+**CODE WARS**
 
+* Date: April 8, 2026
+* Time: 12:00 - 1:00 PM
+* Venue: Room 509, Main Engineering Block
+* Faculty Incharge: Trupthi Ma'am
 * Open to registered students; individual or teams of 2
 * Problems: easy, medium, hard within time limit
 * Languages: C, Java, Python
@@ -11,8 +15,12 @@
 
 ---
 
-**TECH QUIZ** 
+**TECH QUIZ**
 
+* Date: April 8, 2026
+* Time: 1:00 - 2:30 PM
+* Venue: Room 301, Main Engineering Block
+* Faculty Incharge: Roopa Ma'am
 * Teams of 2 only
 * Round 1: 12 MCQs, 15 mins, 12 points
 * Round 2: Unscramble (buzzer), 8 points
@@ -24,8 +32,12 @@
 
 ---
 
-**IDEATHON X** 
+**IDEATHON X**
 
+* Date: April 8, 2026
+* Time: 2:30 - 3:30 PM
+* Venue: Room 308, Main Engineering Block
+* Faculty Incharge: Sruthi Ma'am
 * Team of 2–3 (inter-department allowed)
 * ID card and at least one laptop required
 * Domains: AI, Web, IoT, Cybersecurity
@@ -36,8 +48,12 @@
 
 ---
 
-**PHOTOGRAPHY & VIDEOGRAPHY** 
+**VIDEOGRAPHY**
 
+* Date: April 8, 2026
+* Time: 3:30 - 4:30 PM
+* Venue: Room 301, Main Engineering Block
+* Faculty Incharge: Anjana Ma'am
 * Open to registered participants (1st–3rd year only)
 * Conducted offline
 * Content must be captured on campus
@@ -48,8 +64,28 @@
 
 ---
 
-**RAPID TYPING** 
+**PHOTOGRAPHY EVENT**
 
+* Date: April 8, 2026
+* Time: 2:30 - 3:30 PM
+* Venue: Main Building (302)
+* Faculty Incharge: Anjana Ma'am
+* Registration Fee: ₹30
+* Use only original photographs taken during the event
+* Do not photograph restricted areas or people without consent
+* Minimal editing (brightness/contrast/crop) is allowed
+* One entry per participant
+* Respect campus property and rules while shooting
+* Judges' decision is final
+
+---
+
+**RAPID TYPING**
+
+* Date: April 8, 2026
+* Time: 3:30 - 4:30 PM
+* Venue: Room 511, Main Engineering Block
+* Faculty Incharge: Anjana Ma'am
 * Time: 2 min 30 sec
 * Type given passage exactly
 * Accuracy + speed important
@@ -59,8 +95,12 @@
 
 ---
 
-**POSTER PRESENTATION** 
+**POSTER PRESENTATION**
 
+* Date: April 8, 2026
+* Time: 3:30 - 4:30 PM
+* Venue: Room 308, Main Engineering Block
+* Faculty Incharge: Sharon & Akshatha Ma'am
 * Team of 3 members
 * 5–7 min presentation + 2–3 min Q&A
 * Original poster required
@@ -71,8 +111,12 @@
 
 ---
 
-**TECHNICAL DEBATE** 
+**TECHNICAL DEBATE**
 
+* Date: April 9, 2026
+* Time: 12:00 - 1:30 PM
+* Venue: Room 308, Main Engineering Block
+* Faculty Incharge: Akshatha Ma'am
 * Individual participation
 * Conducted in English
 * Assigned “For” or “Against”
@@ -83,8 +127,12 @@
 
 ---
 
-**THE NEXTGEN GAMING** 
+**NEXTGEN GAMING**
 
+* Date: April 9, 2026
+* Time: 1:30 - 2:30 PM
+* Venue: Room 308, Main Engineering Block
+* Faculty Incharge: Kiran Sir
 * BGMI & Free Fire squad matches
 * Minimum 3 players per squad
 * Multiple rounds + final
@@ -122,8 +170,12 @@
 
 ---
 
-**TREASURE HUNT** 
+**TREASURE HUNT**
 
+* Date: April 9, 2026
+* Time: 2:30 - 4:30 PM
+* Venue: Room 301, Main Engineering Block
+* Faculty Incharge: Kiran Sir & Sharon Ma'am
 * Individual/team participation
 * Solve clues in order
 * No tampering with clues
@@ -134,8 +186,12 @@
 
 ---
 
-**THE CIRCUIT ARENA** 
+**THE CIRCUIT ARENA**
 
+* Date: April 9, 2026
+* Time: 12:00 - 1:30 PM
+* Venue: ECE Lab
+* Faculty Incharge: Smitha Ma'am
 * Team of max 2
 * Round 1: MCQ elimination
 * Round 2: Circuit building (time-based)
