@@ -60,13 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Trigger immediately on load
     decryptElements.forEach(el => animateDecrypt(el, 5, 80));
 
-    // Trigger on logo hover
-    const mainLogo = document.querySelector('.pill-logo');
-    if (mainLogo) {
-        mainLogo.addEventListener('mouseenter', () => {
-            decryptElements.forEach(el => animateDecrypt(el, 3, 60));
-        });
-    }
+    // (Logo Decrypt logic remains, but specific interaction moved to Navigation section)
 
     // --- Intersection Observer for Scroll Animations ---
     // Elements with .fade-in or .slide-up will animate when they enter the viewport
@@ -95,82 +89,145 @@ document.addEventListener('DOMContentLoaded', () => {
         animateOnScroll.observe(el);
     });
 
-    // --- Pill Nav GSAP Logic ---
-    document.querySelectorAll('.pill').forEach(pill => {
-        const circle = pill.querySelector('.hover-circle');
-        const label = pill.querySelector('.pill-label');
-        const hoverLabel = pill.querySelector('.pill-label-hover');
+    // --- Staggered Menu Logic ---
+    const menuWrapper = document.querySelector('.staggered-menu-wrapper');
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuPanel = document.getElementById('staggered-menu-panel');
+    const preLayers = document.querySelectorAll('.sm-prelayer');
+    const menuItems = document.querySelectorAll('.sm-panel-itemLabel');
+    const qrContainer = document.querySelector('.sm-qr-container');
+    const textInner = document.querySelector('.sm-toggle-textInner');
+    const icon = document.querySelector('.sm-icon');
+    
+    let isMenuOpen = false;
+    let isBusy = false;
+
+    const toggleMenu = () => {
+        if (isBusy) return;
+        isBusy = true;
+        isMenuOpen = !isMenuOpen;
         
-        // Layout calculation handler
-        const layout = () => {
-            const rect = pill.getBoundingClientRect();
-            const w = rect.width;
-            const h = rect.height;
-            
-            // Calculate circle size to cover the pill
-            const R = ((w * w) / 4 + h * h) / (2 * h);
-            const D = Math.ceil(2 * R) + 2;
-            const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
-            const originY = D - delta;
-
-            circle.style.width = `${D}px`;
-            circle.style.height = `${D}px`;
-            circle.style.bottom = `-${delta}px`;
-
-            gsap.set(circle, {
-                xPercent: -50,
-                scale: 0,
-                transformOrigin: `50% ${originY}px`
-            });
-
-            gsap.set(label, { y: 0 });
-            gsap.set(hoverLabel, { y: h + 12, opacity: 0 });
-            
-            // Re-create timeline based on new dimensions
-            if (pill._tl) pill._tl.kill();
-            
-            const tl = gsap.timeline({ paused: true });
-            tl.to(circle, { scale: 1.2, xPercent: -50, duration: 0.4, ease: 'power2.easeOut', overwrite: 'auto' }, 0);
-            tl.to(label, { y: -(h + 8), duration: 0.4, ease: 'power2.easeOut', overwrite: 'auto' }, 0);
-            
-            gsap.set(hoverLabel, { y: Math.ceil(h + 100), opacity: 0 });
-            tl.to(hoverLabel, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.easeOut', overwrite: 'auto' }, 0);
-            
-            pill._tl = tl;
-        };
-
-        // Initialize layout on load
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(layout);
+        menuToggle.setAttribute('aria-expanded', isMenuOpen);
+        menuPanel.setAttribute('aria-hidden', !isMenuOpen);
+        
+        if (isMenuOpen) {
+            menuWrapper.classList.add('fixed-wrapper');
+            openMenu();
         } else {
-            layout();
+            closeMenu();
+        }
+    };
+
+    const openMenu = () => {
+        const tl = gsap.timeline({
+            onComplete: () => { isBusy = false; }
+        });
+
+        // 1. Animate Pre-layers
+        tl.to(preLayers, {
+            xPercent: -100,
+            duration: 0.5,
+            ease: "power4.out",
+            stagger: 0.1
+        }, 0);
+
+        // 2. Animate Main Panel
+        tl.to(menuPanel, {
+            xPercent: -100,
+            duration: 0.6,
+            ease: "power4.out"
+        }, 0.15);
+
+        // 3. Animate Menu Items (Staggered)
+        tl.to(menuItems, {
+            yPercent: -140, 
+            rotate: 0,
+            duration: 0.8,
+            ease: "power4.out",
+            stagger: 0.1
+        }, 0.3);
+
+        // 4. Animate QR Container
+        if (qrContainer) {
+            tl.to(qrContainer, {
+                y: 0,
+                opacity: 1,
+                duration: 0.6,
+                ease: "power2.out"
+            }, 0.5);
         }
 
-        window.addEventListener('resize', layout);
+        // 5. Animate Toggle Text and Icon
+        gsap.to(textInner, { yPercent: -50, duration: 0.4, ease: "power4.out" });
+        gsap.to(icon, { rotate: 225, duration: 0.4, ease: "power4.out" });
+    };
 
-        pill.addEventListener('mouseenter', () => pill._tl && pill._tl.play());
-        pill.addEventListener('mouseleave', () => pill._tl && pill._tl.reverse());
+    const closeMenu = () => {
+        const tl = gsap.timeline({
+            onComplete: () => {
+                menuWrapper.classList.remove('fixed-wrapper');
+                isBusy = false;
+                // Reset positions for next open
+                gsap.set(menuItems, { yPercent: 0, rotate: 10 });
+                if (qrContainer) gsap.set(qrContainer, { y: 20, opacity: 0 });
+            }
+        });
+
+        tl.to([menuPanel, ...preLayers], {
+            xPercent: 0,
+            duration: 0.4,
+            ease: "power2.in",
+            stagger: {
+                each: 0.05,
+                from: "end"
+            }
+        });
+
+        gsap.to(textInner, { yPercent: 0, duration: 0.4, ease: "power4.out" });
+        gsap.to(icon, { rotate: 0, duration: 0.4, ease: "power4.out" });
+    };
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleMenu);
+    }
+
+    // Close menu when links are clicked
+    document.querySelectorAll('.sm-panel-item').forEach(link => {
+        link.addEventListener('click', () => {
+            if (isMenuOpen) toggleMenu();
+        });
     });
 
-    // Logo spin interaction
-    const pillLogo = document.querySelector('.pill-logo');
-    if (pillLogo) {
-        pillLogo.addEventListener('mouseenter', () => {
-            gsap.fromTo(pillLogo, { rotate: 0 }, { rotate: 360, duration: 0.5, ease: 'power2.easeOut', overwrite: 'auto' });
+    // Handle clicks outside the panel
+    window.addEventListener('mousedown', (e) => {
+        if (isMenuOpen && !menuPanel.contains(e.target) && !menuToggle.contains(e.target)) {
+            toggleMenu();
+        }
+    });
+
+    // Fix for the register button in the menu (it's an <a> now but it might be picked up by general register logic)
+    // Actually, I'll update the register button selector in the modal logic.
+    // Trigger on logo hover
+    const mainLogo = document.querySelector('.sm-logo');
+    if (mainLogo) {
+        mainLogo.addEventListener('mouseenter', () => {
+            decryptElements.forEach(el => animateDecrypt(el, 3, 60));
+            gsap.fromTo(mainLogo, { rotate: 0 }, { rotate: 360, duration: 0.5, ease: 'power2.easeOut', overwrite: 'auto' });
         });
     }
 
     // --- Modal Logic ---
     const modal = document.getElementById('register-modal');
-    const registerBtn = document.getElementById('register-btn');
+    const registerButtons = document.querySelectorAll('#register-btn, #register-btn-mobile');
     const closeBtn = document.querySelector('.close-btn');
 
     // Open modal
-    if (registerBtn && modal) {
-        registerBtn.addEventListener('click', () => {
+    registerButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
             modal.classList.add('show');
+            if (isMenuOpen) toggleMenu(); // Close menu if opening register from mobile
         });
-    }
+    });
 
     // Close modal
     if (closeBtn && modal) {
@@ -194,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     eventImages.forEach(img => {
         img.addEventListener('click', function() {
-            // Check if the image has a defined source and is not empty
             const src = this.getAttribute('src');
             if (src && src.trim() !== '') {
                 if (imageModal && fullImage) {
@@ -212,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Close image modal when clicking outside the image
+    // Close image modal when clicking outside
     window.addEventListener('click', (e) => {
         if (e.target === imageModal) {
             imageModal.classList.remove('show');
@@ -226,10 +282,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
             if (currentTheme === 'dark') {
                 document.documentElement.setAttribute('data-theme', 'light');
-                themeToggleBtn.innerHTML = '🌙';
+                themeToggleBtn.textContent = '🌙';
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggleBtn.innerHTML = '☀';
+                themeToggleBtn.textContent = '☀';
             }
         });
     }
